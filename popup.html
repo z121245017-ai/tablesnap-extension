@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TableSnap - 网页表格与评价提取器</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="top-bar">
+        <div class="brand">
+          <img src="icons/icon48.png" alt="TableSnap" class="brand-icon" />
+          <div class="brand-text">
+            <div class="brand-title-row">
+              <span class="brand-name">TableSnap</span>
+              <span class="badge-local">不限行数</span>
+            </div>
+            <span class="brand-sub">Excel 兼容 CSV · 评价/表格提取</span>
+          </div>
+        </div>
+        <button id="openCoffeeBtn" class="coffee-pill" type="button" title="支持开发者">
+          ☕ 请作者喝咖啡
+        </button>
+      </header>
+
+      <main class="content">
+        <section id="statusCard" class="card status-card">
+          <div class="status-header">
+            <div id="statusSummary" class="status-summary">正在扫描当前页面表格…</div>
+            <button id="rescanBtn" class="btn-ghost" type="button" title="重新扫描页面">
+              重新扫描
+            </button>
+          </div>
+
+          <div id="switcherRow" class="switcher-row hidden">
+            <label for="tableSelect" class="switcher-label">切换表格</label>
+            <select id="tableSelect" class="table-select"></select>
+            <button id="highlightBtn" class="btn-ghost" type="button">定位</button>
+          </div>
+
+          <div id="previewWrapper" class="preview-wrapper hidden">
+            <div class="preview-meta">
+              <span id="previewBadge">预览前 4 行</span>
+              <span id="unlimitedNote" class="unlimited-note">导出包含全部行 · 无 250 行限制</span>
+            </div>
+            <div class="preview-scroll">
+              <table id="previewTable" class="preview-table"></table>
+            </div>
+          </div>
+
+          <div id="emptyState" class="empty-state hidden">
+            <p class="empty-title">当前页面暂未检测到可导出的表格或评价列表</p>
+            <p class="empty-desc">
+              请打开包含 &lt;table&gt; 数据表、电商订单或商品评价列表的网页后点击「重新扫描」。
+            </p>
+          </div>
+        </section>
+
+        <section class="card option-card">
+          <label class="toggle-row" for="protectLongIdsToggle">
+            <div class="toggle-copy">
+              <span class="toggle-title">保护长数字 SKU / 订单号防乱码</span>
+              <span class="toggle-hint">CSV 中自动为 ≥11 位数字与 0 开头编码防科学计数法</span>
+            </div>
+            <input id="protectLongIdsToggle" type="checkbox" checked />
+          </label>
+        </section>
+
+        <section class="actions-area">
+          <button id="downloadCsvBtn" class="btn-primary" type="button" disabled>
+            下载 Excel 兼容 CSV (不限行数)
+          </button>
+
+          <div class="secondary-grid">
+            <button id="copyMarkdownBtn" class="btn-secondary" type="button" disabled>
+              复制 Markdown
+            </button>
+            <button id="copyTsvBtn" class="btn-secondary" type="button" disabled>
+              复制 TSV
+            </button>
+            <button id="downloadJsonBtn" class="btn-secondary" type="button" disabled>
+              导出 JSON
+            </button>
+          </div>
+        </section>
+
+        <div id="toastBar" class="toast-bar hidden" role="status" aria-live="polite"></div>
+      </main>
+
+      <footer class="footer-bar">
+        <span>100% 纯本地运行 · UTF-8 BOM · 零网络请求</span>
+        <button id="footerCoffeeLink" class="footer-link" type="button">☕ 打赏支持</button>
+      </footer>
+    </div>
+
+    <div id="coffeeModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="coffeeModalTitle">
+      <div class="modal-card">
+        <div class="modal-head">
+          <h2 id="coffeeModalTitle" class="modal-title">☕ 请作者喝杯咖啡</h2>
+          <button id="closeCoffeeModalBtn" class="modal-close" type="button" aria-label="关闭">×</button>
+        </div>
+        <p class="modal-desc">
+          TableSnap 永久免费、不限 250 行、纯本地解析不上传数据。如果帮你省下了整理表格的时间，欢迎扫码支持！
+        </p>
+        <div class="qr-frame">
+          <img src="assets/wechat-coffee-light.png" alt="微信赞赏二维码" class="qr-image" />
+        </div>
+        <div class="modal-actions">
+          <button id="coffeeDonatedBtn" class="btn-primary modal-btn" type="button">我已打赏</button>
+          <button id="coffeeLaterBtn" class="btn-secondary modal-btn" type="button">以后再说</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="src/exporter/table_exporter.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>

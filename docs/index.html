@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TableSnap — 免费不限行数的网页表格与评价提取插件</title>
+    <style>
+      :root {
+        --bg: #f8fafc;
+        --card: #ffffff;
+        --border: #e2e8f0;
+        --text: #0f172a;
+        --muted: #475569;
+        --primary: #2563eb;
+        --primary-hover: #1d4ed8;
+        --soft: #eff6ff;
+        --success: #0f766e;
+        --success-bg: #f0fdfa;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+        line-height: 1.6;
+      }
+      .wrap {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 32px 20px 64px;
+      }
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 36px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 700;
+        font-size: 18px;
+      }
+      .brand img {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+      }
+      .nav-links {
+        display: flex;
+        gap: 18px;
+        font-size: 14px;
+      }
+      .nav-links a {
+        color: var(--muted);
+        text-decoration: none;
+        font-weight: 500;
+      }
+      .nav-links a:hover { color: var(--primary); }
+      .hero {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 32px;
+        margin-bottom: 24px;
+      }
+      .pill {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 999px;
+        background: var(--soft);
+        color: var(--primary);
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom: 12px;
+      }
+      h1 {
+        margin: 0 0 12px;
+        font-size: 32px;
+        line-height: 1.25;
+      }
+      .lead {
+        margin: 0 0 22px;
+        color: var(--muted);
+        font-size: 16px;
+      }
+      .cta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        padding: 11px 18px;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        border: 1px solid transparent;
+      }
+      .btn-primary {
+        background: var(--primary);
+        color: #ffffff;
+      }
+      .btn-primary:hover { background: var(--primary-hover); }
+      .btn-outline {
+        background: #ffffff;
+        color: var(--text);
+        border-color: var(--border);
+      }
+      .btn-outline:hover { background: #f1f5f9; }
+      .grid-3 {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 20px;
+      }
+      .card h3 {
+        margin: 0 0 8px;
+        font-size: 16px;
+      }
+      .card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .demo-section {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 24px;
+      }
+      .demo-head {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+      .demo-controls {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+      .demo-table-wrap {
+        overflow-x: auto;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        margin-bottom: 14px;
+      }
+      table.demo-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+      table.demo-table th,
+      table.demo-table td {
+        padding: 8px 12px;
+        border-bottom: 1px solid var(--border);
+        border-right: 1px solid #f1f5f9;
+        text-align: left;
+      }
+      table.demo-table th {
+        background: #f8fafc;
+        font-weight: 600;
+      }
+      .output-box {
+        background: #0f172a;
+        color: #e2e8f0;
+        border-radius: 10px;
+        padding: 14px;
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 12px;
+        white-space: pre-wrap;
+        word-break: break-all;
+        margin: 0;
+      }
+      .coffee-box {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        background: #ffffff;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 24px;
+      }
+      .coffee-qr {
+        width: 180px;
+        height: auto;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+      }
+      footer {
+        margin-top: 32px;
+        text-align: center;
+        font-size: 13px;
+        color: var(--muted);
+      }
+      footer a { color: var(--primary); text-decoration: none; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <nav class="nav">
+        <div class="brand">
+          <img src="assets/icon128.png" alt="TableSnap" />
+          <span>TableSnap v1.0.0</span>
+        </div>
+        <div class="nav-links">
+          <a href="#demo">在线体验</a>
+          <a href="#coffee">☕ 请喝咖啡</a>
+          <a href="privacy.html">隐私政策</a>
+          <a href="https://github.com/z121245017-ai/tablesnap-extension" target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </nav>
+
+      <section class="hero">
+        <span class="pill">100% 纯本地运行 · 不限 250 行 · Excel 打开不乱码</span>
+        <h1>网页表格与电商评价，一键导出 Excel 兼容 CSV &amp; Markdown</h1>
+        <p class="lead">
+          告别竞品 250 行截断、CSV 收费墙、中文打开乱码以及 14 位 SKU/订单号变成科学计数法。TableSnap 完全免费开源，支持合并单元格（rowspan/colspan）自动展开与评论卡片提取。
+        </p>
+        <div class="cta-row">
+          <a
+            class="btn btn-primary"
+            href="https://github.com/z121245017-ai/tablesnap-extension/releases/download/v1.0.0/tablesnap-extension-v1.0.0.zip"
+          >
+            下载扩展包 v1.0.0 (.zip)
+          </a>
+          <a class="btn btn-outline" href="#demo">立即体验 Excel-Safe 导出</a>
+        </div>
+      </section>
+
+      <section class="grid-3">
+        <div class="card">
+          <h3>🔓 真正不限行数</h3>
+          <p>当前页面有多少行就导出多少行，彻底摆脱 250 行免费限制和 CSV 导出付费弹窗。</p>
+        </div>
+        <div class="card">
+          <h3>🇨🇳 UTF-8 BOM + SKU 防乱码</h3>
+          <p>自动注入 <code>\uFEFF</code> BOM 让 Excel 双击直开不乱码，并支持为 ≥11 位数字及 0 开头编码保护原样。</p>
+        </div>
+        <div class="card">
+          <h3>🧩 合并单元格与评价列表</h3>
+          <p>完整展开 <code>rowspan</code> / <code>colspan</code> 矩阵，并可自动识别无 <code>&lt;table&gt;</code> 的电商评价卡片列表。</p>
+        </div>
+      </section>
+
+      <section id="demo" class="demo-section">
+        <div class="demo-head">
+          <div>
+            <h2 style="margin:0 0 4px;font-size:20px;">交互式在线演示（使用与插件同源提取与导出内核）</h2>
+            <div style="font-size:13px;color:#475569;">点击下方按钮体验合并单元格展开、SKU 保护开关与一键导出效果</div>
+          </div>
+        </div>
+
+        <div class="demo-table-wrap">
+          <table id="sampleOrderTable" class="demo-table">
+            <thead>
+              <tr>
+                <th rowspan="2">订单编号</th>
+                <th colspan="2">商品与 SKU</th>
+                <th rowspan="2">买家评价</th>
+                <th rowspan="2">实付金额</th>
+              </tr>
+              <tr>
+                <th>商品名称</th>
+                <th>14 位条码 / SKU</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>000987654321</td>
+                <td>机械键盘 87 键（红轴）</td>
+                <td>69012345678901</td>
+                <td>手感清脆，包装严实</td>
+                <td>¥329.00</td>
+              </tr>
+              <tr>
+                <td>000987654322</td>
+                <td>Type-C 扩展坞 7 合 1</td>
+                <td>69012345678902</td>
+                <td>传输稳定，"性价比很高"</td>
+                <td>¥149.00</td>
+              </tr>
+              <tr>
+                <td rowspan="2">000987654323</td>
+                <td>降噪蓝牙耳机 Pro</td>
+                <td>69012345678903</td>
+                <td>通勤降噪效果明显</td>
+                <td>¥499.00</td>
+              </tr>
+              <tr>
+                <td>便携硅胶保护套</td>
+                <td>00456789012345</td>
+                <td>赠品贴合度不错</td>
+                <td>¥0.00</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="demo-controls">
+          <label style="display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;cursor:pointer;">
+            <input id="demoProtectToggle" type="checkbox" checked />
+            保护长数字 SKU / 0 开头编码防科学计数法
+          </label>
+          <button id="demoPreviewCsvBtn" class="btn btn-outline" type="button">预览 CSV 输出</button>
+          <button id="demoPreviewMdBtn" class="btn btn-outline" type="button">预览 Markdown 输出</button>
+          <button id="demoDownloadCsvBtn" class="btn btn-primary" type="button">下载示例 Excel CSV</button>
+        </div>
+
+        <pre id="demoOutput" class="output-box"></pre>
+      </section>
+
+      <section id="coffee" class="coffee-box">
+        <div style="flex:1;min-width:260px;">
+          <h2 style="margin:0 0 8px;font-size:20px;">☕ 请作者喝杯咖啡</h2>
+          <p style="margin:0 0 10px;color:#475569;font-size:14px;">
+            TableSnap 坚持 100% 本地免费、无账号登录、无行数限制。如果它帮你在电商运营、数据分析或对账时省下了时间，欢迎微信扫码请作者喝杯咖啡！
+          </p>
+          <p style="margin:0;font-size:13px;color:#0f766e;font-weight:600;">
+            纯本地运行 · 零网络请求 (`connect-src 'none'`) · 开源可审计
+          </p>
+        </div>
+        <img src="assets/wechat-coffee-light.png" alt="微信赞赏码" class="coffee-qr" />
+      </section>
+
+      <footer>
+        TableSnap v1.0.0 · <a href="privacy.html">隐私政策</a> ·
+        <a href="https://github.com/z121245017-ai/tablesnap-extension" target="_blank" rel="noopener">GitHub 仓库</a>
+      </footer>
+    </div>
+
+    <script src="assets/table_extractor.js"></script>
+    <script src="assets/table_exporter.js"></script>
+    <script>
+      (function () {
+        var table = document.getElementById('sampleOrderTable');
+        var toggle = document.getElementById('demoProtectToggle');
+        var outEl = document.getElementById('demoOutput');
+        var mode = 'csv';
+
+        function renderOutput() {
+          var matrix = window.TableSnapExtractor.extractTableMatrix(table, window).rows;
+          if (mode === 'md') {
+            outEl.textContent = window.TableSnapExporter.toMarkdown(matrix);
+          } else {
+            var csv = window.TableSnapExporter.toCsv(matrix, {
+              includeBom: true,
+              protectLongIds: toggle.checked
+            });
+            outEl.textContent = '[已包含 UTF-8 BOM \\uFEFF]\n' + csv.replace(/^\uFEFF/, '');
+          }
+        }
+
+        document.getElementById('demoPreviewCsvBtn').addEventListener('click', function () {
+          mode = 'csv';
+          renderOutput();
+        });
+        document.getElementById('demoPreviewMdBtn').addEventListener('click', function () {
+          mode = 'md';
+          renderOutput();
+        });
+        toggle.addEventListener('change', renderOutput);
+
+        document.getElementById('demoDownloadCsvBtn').addEventListener('click', function () {
+          var matrix = window.TableSnapExtractor.extractTableMatrix(table, window).rows;
+          var csv = window.TableSnapExporter.toCsv(matrix, {
+            includeBom: true,
+            protectLongIds: toggle.checked
+          });
+          var blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+          var url = URL.createObjectURL(blob);
+          var a = document.createElement('a');
+          a.href = url;
+          a.download = window.TableSnapExporter.buildFilename('demo-orders', 'csv');
+          document.body.appendChild(a);
+          a.click();
+          setTimeout(function () {
+            URL.revokeObjectURL(url);
+            a.remove();
+          }, 800);
+        });
+
+        renderOutput();
+      })();
+    </script>
+  </body>
+</html>

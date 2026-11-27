@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TableSnap 隐私政策 / Privacy Policy</title>
+    <style>
+      body {
+        margin: 0;
+        background: #f8fafc;
+        color: #0f172a;
+        font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Segoe UI", sans-serif;
+        line-height: 1.7;
+      }
+      .wrap {
+        max-width: 760px;
+        margin: 36px auto;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        padding: 32px;
+      }
+      h1 { margin-top: 0; font-size: 24px; }
+      h2 { margin-top: 24px; font-size: 18px; }
+      p, li { color: #334155; font-size: 14px; }
+      a { color: #2563eb; text-decoration: none; }
+      a:hover { text-decoration: underline; }
+      code {
+        background: #f1f5f9;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 13px;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="wrap">
+      <p><a href="index.html">← 返回 TableSnap 首页</a></p>
+      <h1>TableSnap 隐私政策 / Privacy Policy</h1>
+      <p>生效日期：2026-11-27 · 适用版本：v1.0.0</p>
+
+      <h2>1. 零数据收集与零网络请求</h2>
+      <p>
+        TableSnap 是一款 100% 纯本地运行的 Chrome 扩展。扩展的 Manifest V3 内容安全策略明确限制
+        <code>connect-src 'none'</code>，不会向任何远程服务器发送网页内容、提取的表格数据、用户信息或统计遥测。
+      </p>
+
+      <h2>2. 权限使用说明</h2>
+      <ul>
+        <li><code>activeTab</code> 与 <code>scripting</code>：仅在您主动点击扩展图标时读取当前标签页中的表格与评价 DOM 结构，用于生成 CSV / Markdown / TSV / JSON 导出内容。</li>
+        <li><code>storage</code>：仅在浏览器本地 <code>chrome.storage.local</code> 中保存您的开关偏好（如是否启用长数字 SKU 防科学计数法保护、咖啡提示状态）。</li>
+      </ul>
+
+      <h2>3. Privacy Policy (English)</h2>
+      <p>
+        TableSnap processes all web tables and review cards strictly locally inside your browser. No data is collected, transmitted, sold, or shared with any third party. The extension enforces <code>connect-src 'none'</code> and requires zero login.
+      </p>
+    </main>
+  </body>
+</html>
